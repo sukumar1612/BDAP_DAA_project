@@ -69,7 +69,7 @@ def generate_matrix(data):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     data = generate_random_assignment()
-    # print(data)
+    print(data)
     # data = get_problem_details()
     mat = generate_matrix(data)
     edmond = ek.EdmondsKarp(mat)
