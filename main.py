@@ -2,8 +2,9 @@
 
 import random
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import plotly
+from plotly.graph_objs import Scatter, Layout
+
 import EdmondsKarp as ek
 
 
@@ -25,14 +26,13 @@ def get_problem_details():
     return data
 
 
-def generate_random_assignment():
-    no_of_drivers = int(random.random()*100)
-    no_of_buses = int(random.random()*100) % no_of_drivers
+def generate_random_assignment(no_of_drivers, no_of_buses):
+    # no_of_buses = int(random.random()*100) % no_of_drivers
 
     data = {}
 
     for i in range(1, no_of_drivers + 1):
-        data[i] = no_of_drivers + int(random.random()*100) % no_of_buses
+        data[i] = no_of_drivers + int(random.random() * 100) % no_of_buses
 
     data["no_of_drivers"] = no_of_drivers
     data["no_of_buses"] = no_of_buses
@@ -66,9 +66,29 @@ def generate_matrix(data):
     return input_matrix
 
 
+def generate_random_plot():
+    print("-------------")
+    x = [i for i in range(50, 200, 4)]
+    y = []
+    print("loading graph :        ", end=" ")
+    for i in range(50, 200, 4):
+        data = generate_random_assignment(i, 50)
+        mat = generate_matrix(data)
+        edmond = ek.EdmondsKarp(mat)
+        output = edmond.edmonds_karp(0, data["no_of_buses"] + data["no_of_drivers"] + 1)
+        y.append(output[2])
+        print(end="\b\b\b\b"+str(int(100*(i-50)/150))+" %")
+    print(end="\b\b\b\b" + str(100) + "%")
+    print("\nfinished")
+    plotly.offline.plot({
+        "data": [Scatter(x=x, y=y)],
+        "layout": Layout(title="Edmond karp")
+    })
+
+
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    data = generate_random_assignment()
+    data = generate_random_assignment(59, 22)
     print(data)
     # data = get_problem_details()
     mat = generate_matrix(data)
@@ -79,4 +99,6 @@ if __name__ == '__main__':
     for i in range(1, len(output[1])):
         print("Driver ", output[1][i][2], " is assigned to bus ", output[1][i][1] - data["no_of_drivers"])
     print("number of iterations : ", output[2])
+
+    generate_random_plot()
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

@@ -1,0 +1,5 @@
+certifi==2021.10.8
+plotly==5.4.0
+six==1.16.0
+tenacity==8.0.1
+wincertstore==0.2
