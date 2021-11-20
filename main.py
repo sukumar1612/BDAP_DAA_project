@@ -12,15 +12,15 @@ def get_problem_details():
     if no_of_buses > no_of_drivers:
         print("ERROR: No. of Buses >= No.of drivers!")
 
-    preferences = {}
+    data = {}
     for i in range(1, no_of_drivers + 1):
         driver = i
         temp = int(input("Enter driver " + str(driver) + "'s prefered buses: "))
-        preferences[driver] = temp + no_of_drivers
-    preferences["no_of_drivers"] = no_of_drivers
-    preferences["no_of_buses"] = no_of_buses
-    print(preferences)
-    return preferences
+        data[driver] = temp + no_of_drivers
+    data["no_of_drivers"] = no_of_drivers
+    data["no_of_buses"] = no_of_buses
+    print(data)
+    return data
 
 
 def generate_matrix(data):
@@ -54,9 +54,11 @@ def generate_matrix(data):
 if __name__ == '__main__':
     data = get_problem_details()
     mat = generate_matrix(data)
-    for i in mat:
-        print(i)
     edmond = ek.EdmondsKarp(mat)
-    print(edmond.edmonds_karp(0, data["no_of_buses"]+data["no_of_drivers"]+1))
+    output = edmond.edmonds_karp(0, data["no_of_buses"] + data["no_of_drivers"] + 1)
+    print("total number of bus drivers assigned to buses are :", output[0])
+    print(output[1])
+    for i in range(1, len(output[1])):
+        print("Driver ", output[1][i][2], " is assigned to bus ", output[1][i][1] - data["no_of_drivers"])
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

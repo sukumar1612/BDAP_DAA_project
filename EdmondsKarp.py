@@ -22,15 +22,18 @@ class EdmondsKarp:
 
     def edmonds_karp(self, source, sink):
         parent = [-1] * self.ROW
-
+        paths = [[]]
         max_flow = 0
         while self.bfs(source, sink, parent):
             path_flow = float("Inf")
             s = sink
+            path = []
             while s != source:
+                path.append(s)
                 path_flow = min(path_flow, self.graph[parent[s]][s])
                 s = parent[s]
 
+            paths.append(path)
             max_flow += path_flow
             v = sink
             while v != source:
@@ -39,5 +42,4 @@ class EdmondsKarp:
                 self.graph[v][u] += path_flow
                 v = parent[v]
 
-        print(parent)
-        return max_flow
+        return max_flow, paths
