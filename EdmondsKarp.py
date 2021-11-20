@@ -1,6 +1,10 @@
+from copy import deepcopy
+
+
 class EdmondsKarp:
     def __init__(self, input_matrix):
-        self.graph = input_matrix
+        print(input_matrix)
+        self.graph = deepcopy(input_matrix)
         self.ROW = len(input_matrix)
         self.count = 0
 
@@ -24,7 +28,7 @@ class EdmondsKarp:
 
     def edmonds_karp(self, source, sink):
         parent = [-1] * self.ROW
-        paths = [[]]
+        paths = []
         max_flow = 0
         while self.bfs(source, sink, parent):
             path_flow = float("Inf")
@@ -45,5 +49,6 @@ class EdmondsKarp:
                 self.graph[u][v] -= path_flow
                 self.graph[v][u] += path_flow
                 v = parent[v]
-
+        # print("ek paths:", paths)
+        # print("ek mf: ", max_flow)
         return max_flow, paths, self.count

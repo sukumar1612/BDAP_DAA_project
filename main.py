@@ -1,11 +1,13 @@
 # This is a sample Python script.
 
 import random
+# import numpy as np
 
-import plotly
-from plotly.graph_objs import Scatter, Layout
+from plotly.offline import plot
+from plotly.graph_objs import Scatter, Layout, Figure
 
 import EdmondsKarp as ek
+import FordFulkerson as ff
 
 
 def get_problem_details():
@@ -69,32 +71,65 @@ def generate_matrix(data):
 def generate_random_plot():
     print("-------------")
     x = [i for i in range(50, 200, 4)]
-    y = []
+    y1 = []
+    y2 = []
     print("loading graph :        ", end=" ")
     for i in range(50, 200, 4):
         data = generate_random_assignment(i, 50)
         mat = generate_matrix(data)
+        ford = ff.FordFulkerson(mat)
+        output = ford.ford_fulkerson(0, data["no_of_buses"] + data["no_of_drivers"] + 1)
+        y1.append(output[2])
         edmond = ek.EdmondsKarp(mat)
         output = edmond.edmonds_karp(0, data["no_of_buses"] + data["no_of_drivers"] + 1)
-        y.append(output[2])
+        y2.append(output[2])
         print(end="\b\b\b\b"+str(int(100*(i-50)/150))+" %")
     print(end="\b\b\b\b" + str(100) + "%")
     print("\nfinished")
-    plotly.offline.plot({
-        "data": [Scatter(x=x, y=y)],
-        "layout": Layout(title="Edmond karp")
-    })
 
+    trace0 = Scatter(
+        x = x,
+        y = y1,
+        name="Ford Fulkerson"
+    )
+    trace1 = Scatter(
+        x=x,
+        y=y2,
+        name="Edmond Karp"
+    )
+    data = [trace0, trace1]
+    layout = Layout(title = "Bus Driver Assignment")
+    fig = Figure(data = data, layout = layout)
+    plot(fig)
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    data = generate_random_assignment(59, 22)
-    print(data)
+    data = generate_random_assignment(3, 3)
+    # print(data)
     # data = get_problem_details()
     mat = generate_matrix(data)
+    # mat = [[0, 1, 1, 1, 0, 0, 0, 0],
+    #         [1, 0, 0, 0, 1, 0, 0, 0],
+    #         [1, 0, 0, 1, 0, 0, 0, 0],
+    #         [1, 0, 0, 0, 0, 1, 0, 0],
+    #         [0, 0, 0, 0, 0, 0, 0, 1],
+    #         [0, 0, 0, 0, 0, 0, 0, 1],
+    #         [0, 0, 0, 0, 0, 0, 0, 1],
+    #         [0, 0, 0, 0, 1, 1, 1, 0]]
+    # mat = [[0, 1, 1, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 1, 0, 0], [1, 0, 0, 0, 0, 1, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 1, 1,1,0]]
+
+    # print(np.matrix(mat))
+    ford = ff.FordFulkerson(mat)
+    output = ford.ford_fulkerson(0, data["no_of_buses"] + data["no_of_drivers"] + 1)
+    print("Total number of bus drivers assigned to buses are :", output[0])
+
+    for i in range(1, len(output[1])):
+        print("Driver ", output[1][i][2], " is assigned to bus ", output[1][i][1] - data["no_of_drivers"])
+    print("number of iterations : ", output[2])
+
     edmond = ek.EdmondsKarp(mat)
     output = edmond.edmonds_karp(0, data["no_of_buses"] + data["no_of_drivers"] + 1)
-    print("total number of bus drivers assigned to buses are :", output[0])
+    print("Total number of bus drivers assigned to buses are :", output[0])
     # print(output[1])
     for i in range(1, len(output[1])):
         print("Driver ", output[1][i][2], " is assigned to bus ", output[1][i][1] - data["no_of_drivers"])
