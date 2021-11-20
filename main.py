@@ -1,5 +1,7 @@
 # This is a sample Python script.
 
+import random
+
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 import EdmondsKarp as ek
@@ -20,6 +22,20 @@ def get_problem_details():
     data["no_of_drivers"] = no_of_drivers
     data["no_of_buses"] = no_of_buses
     print(data)
+    return data
+
+
+def generate_random_assignment():
+    no_of_drivers = int(random.random()*100)
+    no_of_buses = int(random.random()*100) % no_of_drivers
+
+    data = {}
+
+    for i in range(1, no_of_drivers + 1):
+        data[i] = no_of_drivers + int(random.random()*100) % no_of_buses
+
+    data["no_of_drivers"] = no_of_drivers
+    data["no_of_buses"] = no_of_buses
     return data
 
 
@@ -52,13 +68,15 @@ def generate_matrix(data):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    data = get_problem_details()
+    data = generate_random_assignment()
+    # print(data)
+    # data = get_problem_details()
     mat = generate_matrix(data)
     edmond = ek.EdmondsKarp(mat)
     output = edmond.edmonds_karp(0, data["no_of_buses"] + data["no_of_drivers"] + 1)
     print("total number of bus drivers assigned to buses are :", output[0])
-    print(output[1])
+    # print(output[1])
     for i in range(1, len(output[1])):
         print("Driver ", output[1][i][2], " is assigned to bus ", output[1][i][1] - data["no_of_drivers"])
-
+    print("number of iterations : ", output[2])
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

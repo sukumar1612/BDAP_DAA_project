@@ -2,6 +2,7 @@ class EdmondsKarp:
     def __init__(self, input_matrix):
         self.graph = input_matrix
         self.ROW = len(input_matrix)
+        self.count = 0
 
     def bfs(self, s, t, parent):
         visited = [False] * self.ROW
@@ -12,6 +13,7 @@ class EdmondsKarp:
             u = queue.pop(0)
 
             for ind, val in enumerate(self.graph[u]):
+                self.count = self.count + 1
                 if visited[ind] is False and val > 0:
                     queue.append(ind)
                     visited[ind] = True
@@ -29,6 +31,7 @@ class EdmondsKarp:
             s = sink
             path = []
             while s != source:
+                self.count = self.count + 1
                 path.append(s)
                 path_flow = min(path_flow, self.graph[parent[s]][s])
                 s = parent[s]
@@ -37,9 +40,10 @@ class EdmondsKarp:
             max_flow += path_flow
             v = sink
             while v != source:
+                self.count = self.count + 1
                 u = parent[v]
                 self.graph[u][v] -= path_flow
                 self.graph[v][u] += path_flow
                 v = parent[v]
 
-        return max_flow, paths
+        return max_flow, paths, self.count
