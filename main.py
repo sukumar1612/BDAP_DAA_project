@@ -1,5 +1,3 @@
-# This is a sample Python script.
-
 import random
 
 from plotly.graph_objs import Scatter, Layout, Figure
@@ -98,10 +96,17 @@ def generate_random_plot():
 
 
 if __name__ == '__main__':
+
+    # User Input
+    # data = get_problem_details()
+
+    # Randomised Input
     data = generate_random_assignment(3, 3)
 
+    # Generating the graph for the given data
     mat = generate_matrix(data)
 
+    # Running Ford Fulkerson's Algorithm to find the assignments
     ford = ff.FordFulkerson(mat)
     output = ford.ford_fulkerson(0, data["no_of_buses"] + data["no_of_drivers"] + 1)
     print("Total number of bus drivers assigned to buses are :", output[0])
@@ -110,6 +115,7 @@ if __name__ == '__main__':
         print("Driver ", output[1][i][2], " is assigned to bus ", output[1][i][1] - data["no_of_drivers"])
     print("number of iterations : ", output[2])
 
+    # Running Edmond's Karp Algorithm to find the assignments
     edmond = ek.EdmondsKarp(mat)
     output = edmond.edmonds_karp(0, data["no_of_buses"] + data["no_of_drivers"] + 1)
     print("Total number of bus drivers assigned to buses are :", output[0])
@@ -118,4 +124,5 @@ if __name__ == '__main__':
         print("Driver ", output[1][i][2], " is assigned to bus ", output[1][i][1] - data["no_of_drivers"])
     print("number of iterations : ", output[2])
 
+    # Performance comparison
     generate_random_plot()
