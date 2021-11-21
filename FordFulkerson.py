@@ -11,9 +11,9 @@ class FordFulkerson:
     def dfs(self, s, t, parent, visited):
 
         for ind, val in enumerate(self.graph[s]):
+            self.count = self.count + 1
             if visited[ind] is False and val > 0:
                 parent[ind] = s
-                self.count = self.count + 1
                 if ind != t:
                     visited[ind] = True
                     if self.dfs(ind, t, parent, visited):
@@ -52,13 +52,9 @@ class FordFulkerson:
                     if self.graph[v][u]:
                         self.graph[v][u] -= path_flow
                     v = parent[v]
-                # print(np.array(self.graph))
                 for i in range(len(parent)):
                     parent[i] = -1
-                # print(visited)
             else:
                 break
 
-        # print("ff paths: ", paths)
-        # print("ff mf: ", max_flow)
         return max_flow, paths, self.count
