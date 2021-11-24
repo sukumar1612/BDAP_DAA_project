@@ -74,7 +74,7 @@ def generate_random_plot():
         y1.append(output[2])
 
         edmond = ek.EdmondsKarp(mat)
-        output1 = edmond.edmonds_karp(0, data["no_of_buses"] + data["no_of_drivers"] + 1)
+        output1 = edmond.edmonds_karps_algorithm(0, data["no_of_buses"] + data["no_of_drivers"] + 1)
         y2.append(output1[2])
 
         print(end="\b\b\b\b" + str(int(100 * (i - 50) / 150)) + " %")
@@ -111,7 +111,7 @@ if __name__ == '__main__':
     print("number of iterations : ", output[2])
 
     edmond = ek.EdmondsKarp(mat)
-    output = edmond.edmonds_karp(0, data["no_of_buses"] + data["no_of_drivers"] + 1)
+    output = edmond.edmonds_karps_algorithm(0, data["no_of_buses"] + data["no_of_drivers"] + 1)
     print("Total number of bus drivers assigned to buses are :", output[0])
 
     for i in range(1, len(output[1])):
