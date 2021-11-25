@@ -9,6 +9,8 @@ An implementation of the Bus-Driver Assignment problem using the Ford-Fulkerson 
 
 [Nishanth Gobi](https://github.com/Nishanth-Gobi)
 
+[Barath R](https://github.com/Barath-2001)
+
 
 
 ## Installation
